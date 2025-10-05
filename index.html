@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Factures Vinted - PALIC'S STORE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 32px;
+    }
+    
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 40px;
+        font-size: 18px;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 15px;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+    
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    button:active {
+        transform: translateY(-1px);
+    }
+    
+    .info-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 30px;
+        border-left: 5px solid #4caf50;
+    }
+    
+    .info-box h3 {
+        margin-bottom: 12px;
+        color: #2e7d32;
+        font-size: 18px;
+    }
+    
+    .info-box p {
+        color: #1b5e20;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    
+    #invoice {
+        display: none;
+        margin-top: 40px;
+        padding: 40px;
+        background: white;
+        border: 2px solid #333;
+        border-radius: 5px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    
+    #invoice.show {
+        display: block;
+    }
+    
+    .invoice-header {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    
+    .invoice-number {
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: #666;
+    }
+    
+    .invoice-date {
+        font-size: 14px;
+        margin-bottom: 20px;
+        color: #666;
+    }
+    
+    .invoice-section {
+        margin-bottom: 25px;
+    }
+    
+    .section-title {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #333;
+        text-decoration: underline;
+    }
+    
+    .company-info {
+        line-height: 1.6;
+        font-size: 12px;
+    }
+    
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    
+    .details-table th,
+    .details-table td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: left;
+        font-size: 12px;
+    }
+    
+    .details-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+    }
+    
+    .total-section {
+        text-align: right;
+        margin-top: 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    .conditions-section {
+        margin-top: 30px;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+    
+    .conditions-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .legal-section {
+        margin-top: 20px;
+        font-size: 10px;
+        color: #666;
+        font-style: italic;
+    }
+    
+    .action-buttons {
+        display: none;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .action-buttons.show {
+        display: flex;
+    }
+    
+    .action-buttons button {
+        flex: 1;
+    }
+    
+    .btn-print {
+        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    }
+    
+    .btn-new {
+        background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    }
+    
+    .instructions {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left: 5px solid #ffc107;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 12px;
+        display: none;
+    }
+    
+    .instructions.show {
+        display: block;
+    }
+    
+    .instructions h3 {
+        color: #856404;
+        margin-bottom: 12px;
+        font-size: 18px;
+    }
+    
+    .instructions ol {
+        color: #856404;
+        font-size: 15px;
+        line-height: 2;
+        padding-left: 25px;
+    }
+    
+    .instructions strong {
+        color: #5a4204;
+    }
+    
+    .counter-badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+    @media print {
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        
+        body {
+            background: white;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            box-shadow: none;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+        }
+        
+        .action-buttons,
+        #formSection,
+        .instructions {
+            display: none !important;
+        }
+        
+        #invoice {
+            border: none;
+            box-shadow: none;
+            padding: 20px;
+            margin: 0;
+            page-break-after: avoid;
+            page-break-inside: avoid;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .grid {
+            grid-template-columns: 1fr;
+        }
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Générateur de Factures</h1>
+        <p class="subtitle">Vinted - PALIC'S STORE</p>
+
+```
+    <div id="formSection">
+        <div class="form-group">
+            <label>📋 Numéro de facture <span class="counter-badge" id="counterBadge">Actuel: 2025-00015</span></label>
+            <input type="text" id="invoiceNumber" value="2025-00015">
+        </div>
+        
+        <div class="grid">
+            <div class="form-group">
+                <label>📅 Date (JJ/MM/AAAA) *</label>
+                <input type="text" id="invoiceDate" placeholder="Ex: 30/09/2025">
+            </div>
+            
+            <div class="form-group">
+                <label>👤 Pseudo acheteur *</label>
+                <input type="text" id="buyerPseudo" placeholder="Ex: ld.51000">
+            </div>
+            
+            <div class="form-group">
+                <label>🔢 SKU *</label>
+                <input type="text" id="sku" placeholder="Ex: N°15">
+            </div>
+            
+            <div class="form-group">
+                <label>📦 Quantité</label>
+                <input type="text" id="quantity" value="1">
+            </div>
+            
+            <div class="form-group">
+                <label>👕 Désignation de l'article *</label>
+                <input type="text" id="articleDescription" placeholder="Ex: Jogging nike tech noir">
+            </div>
+            
+            <div class="form-group">
+                <label>💰 Prix unitaire (€) *</label>
+                <input type="text" id="unitPrice" placeholder="Ex: 39,90">
+            </div>
+        </div>
+        
+        <button onclick="generateInvoice()">📄 Générer la Facture</button>
+        
+        <div class="info-box">
+            <h3>ℹ️ Informations fixes de la facture</h3>
+            <p>
+                <strong>Émetteur:</strong> PALIC'S STORE - SAS<br>
+                3 Chemin de Hanches, 28130 Saint-Martin-de-Nigelles<br>
+                SIRET: 991 324 054 00014<br>
+                <strong>Plateforme:</strong> Vinted<br>
+                <strong>Paiement:</strong> Vinted (paiement automatique via plateforme)<br>
+                <strong>TVA:</strong> Non applicable, art. 293 B du CGI
+            </p>
+        </div>
+    </div>
+    
+    <div class="instructions" id="instructions">
+        <h3>📝 Comment obtenir votre PDF :</h3>
+        <ol>
+            <li>Cliquez sur le bouton <strong>"🖨️ Imprimer / PDF"</strong> ci-dessous</li>
+            <li>Dans la fenêtre qui s'ouvre, choisissez <strong>"Enregistrer au format PDF"</strong></li>
+            <li>Sur <strong>Windows</strong>: Appuyez sur <strong>Ctrl + P</strong></li>
+            <li>Sur <strong>Mac</strong>: Appuyez sur <strong>Cmd + P</strong></li>
+            <li>Cliquez sur <strong>"Enregistrer"</strong> et votre facture PDF est prête ! 🎉</li>
+        </ol>
+    </div>
+    
+    <div class="action-buttons" id="actionButtons">
+        <button class="btn-print" onclick="printInvoice()">🖨️ Imprimer / Enregistrer en PDF</button>
+        <button class="btn-new" onclick="newInvoice()">🔄 Nouvelle Facture N°<span id="nextNumber"></span></button>
+    </div>
+    
+    <div id="invoice">
+        <div class="invoice-header">
+            📄 FACTURE
+        </div>
+        
+        <div class="invoice-number">
+            <strong>N° Facture :</strong> <span id="displayInvoiceNumber"></span>
+        </div>
+        <div class="invoice-date">
+            <strong>Date :</strong> <span id="displayDate"></span>
+        </div>
+        
+        <div class="invoice-section">
+            <div class="section-title">Émetteur</div>
+            <div class="company-info">
+                <strong>PALIC'S STORE - SAS</strong><br>
+                3 Chemin de Hanches<br>
+                28130 Saint-Martin-de-Nigelles<br>
+                SIRET : 991 324 054 00014
+            </div>
+        </div>
+        
+        <div class="invoice-section">
+            <div class="section-title">Acheteur</div>
+            <div class="company-info">
+                Plateforme : Vinted<br>
+                Pseudo acheteur : <span id="displayBuyerPseudo"></span>
+            </div>
+        </div>
+        
+        <div class="invoice-section">
+            <div class="section-title">Détails de la vente</div>
+            <table class="details-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Qte</th>
+                        <th>Désignation de l'article</th>
+                        <th>Prix unitaire (€)</th>
+                        <th>Total (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="displaySKU"></span></td>
+                        <td><span id="displayQuantity"></span></td>
+                        <td><span id="displayArticle"></span></td>
+                        <td><span id="displayUnitPrice"></span></td>
+                        <td><span id="displayTotal"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="total-section">
+            Montant total TTC (€) : <span id="displayTotalTTC"></span>
+        </div>
+        
+        <div class="conditions-section">
+            <div class="conditions-title">Conditions :</div>
+            <div>Mode de paiement : Vinted (paiement automatique via plateforme)</div>
+            <div>Conditions de règlement : Paiement comptant</div>
+        </div>
+        
+        <div class="legal-section">
+            <div class="conditions-title">Mentions légales :</div>
+            <div>TVA non applicable, art. 293 B du CGI.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadCounter() {
+        const savedCounter = localStorage.getItem('invoiceCounter');
+        if (savedCounter) {
+            document.getElementById('invoiceNumber').value = savedCounter;
+            updateCounterBadge(savedCounter);
+        }
+    }
+    
+    function saveCounter(value) {
+        localStorage.setItem('invoiceCounter', value);
+        updateCounterBadge(value);
+    }
+    
+    function updateCounterBadge(value) {
+        document.getElementById('counterBadge').textContent = 'Actuel: ' + value;
+    }
+    
+    document.getElementById('invoiceNumber').addEventListener('input', function() {
+        saveCounter(this.value);
+    });
+    
+    function calculateTotal(unitPrice, quantity) {
+        const price = parseFloat(unitPrice.replace(',', '.'));
+        const qty = parseInt(quantity);
+        return (price * qty).toFixed(2).replace('.', ',');
+    }
+    
+    function generateInvoice() {
+        const invoiceNumber = document.getElementById('invoiceNumber').value.trim();
+        const invoiceDate = document.getElementById('invoiceDate').value.trim();
+        const buyerPseudo = document.getElementById('buyerPseudo').value.trim();
+        const sku = document.getElementById('sku').value.trim();
+        const quantity = document.getElementById('quantity').value.trim();
+        const articleDescription = document.getElementById('articleDescription').value.trim();
+        const unitPrice = document.getElementById('unitPrice').value.trim();
+        
+        if (!invoiceNumber || !invoiceDate || !buyerPseudo || !sku || !articleDescription || !unitPrice) {
+            alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+            return;
+        }
+        
+        const total = calculateTotal(unitPrice, quantity);
+        
+        document.getElementById('displayInvoiceNumber').textContent = invoiceNumber;
+        document.getElementById('displayDate').textContent = invoiceDate;
+        document.getElementById('displayBuyerPseudo').textContent = buyerPseudo;
+        document.getElementById('displaySKU').textContent = sku;
+        document.getElementById('displayQuantity').textContent = quantity;
+        document.getElementById('displayArticle').textContent = articleDescription;
+        document.getElementById('displayUnitPrice').textContent = unitPrice;
+        document.getElementById('displayTotal').textContent = total;
+        document.getElementById('displayTotalTTC').textContent = total;
+        
+        const currentYear = invoiceNumber.split('-')[0];
+        const currentNum = parseInt(invoiceNumber.split('-')[1]);
+        const nextNum = currentYear + '-' + String(currentNum + 1).padStart(5, '0');
+        document.getElementById('nextNumber').textContent = nextNum;
+        
+        document.getElementById('invoice').classList.add('show');
+        document.getElementById('actionButtons').classList.add('show');
+        document.getElementById('instructions').classList.add('show');
+        document.getElementById('formSection').style.display = 'none';
+        
+        document.getElementById('invoice').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function printInvoice() {
+        window.print();
+    }
+    
+    function newInvoice() {
+        const currentInvoice = document.getElementById('invoiceNumber').value;
+        const currentYear = currentInvoice.split('-')[0];
+        const currentNum = parseInt(currentInvoice.split('-')[1]);
+        const newInvoiceNumber = currentYear + '-' + String(currentNum + 1).padStart(5, '0');
+        
+        document.getElementById('invoiceNumber').value = newInvoiceNumber;
+        saveCounter(newInvoiceNumber);
+        
+        document.getElementById('invoiceDate').value = '';
+        document.getElementById('buyerPseudo').value = '';
+        document.getElementById('sku').value = '';
+        document.getElementById('quantity').value = '1';
+        document.getElementById('articleDescription').value = '';
+        document.getElementById('unitPrice').value = '';
+        
+        document.getElementById('invoice').classList.remove('show');
+        document.getElementById('actionButtons').classList.remove('show');
+        document.getElementById('instructions').classList.remove('show');
+        document.getElementById('formSection').style.display = 'block';
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    window.addEventListener('load', loadCounter);
+</script>
+```
+
+</body>
+</html>
