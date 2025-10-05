@@ -360,6 +360,11 @@
             </div>
             
             <div class="form-group">
+                <label>🔢 Numéro de transaction *</label>
+                <input type="text" id="transactionNumber" placeholder="Ex: 14895340572">
+            </div>
+            
+            <div class="form-group">
                 <label>🔢 SKU *</label>
                 <input type="text" id="sku" placeholder="Ex: N°15">
             </div>
@@ -437,7 +442,8 @@
             <div class="section-title">Acheteur</div>
             <div class="company-info">
                 Plateforme : Vinted<br>
-                Pseudo acheteur : <span id="displayBuyerPseudo"></span>
+                Pseudo acheteur : <span id="displayBuyerPseudo"></span><br>
+                Numéro de transaction : <span id="displayTransaction"></span>
             </div>
         </div>
         
@@ -514,12 +520,13 @@
         const invoiceNumber = document.getElementById('invoiceNumber').value.trim();
         const invoiceDate = document.getElementById('invoiceDate').value.trim();
         const buyerPseudo = document.getElementById('buyerPseudo').value.trim();
+        const transactionNumber = document.getElementById('transactionNumber').value.trim();
         const sku = document.getElementById('sku').value.trim();
         const quantity = document.getElementById('quantity').value.trim();
         const articleDescription = document.getElementById('articleDescription').value.trim();
         const unitPrice = document.getElementById('unitPrice').value.trim();
         
-        if (!invoiceNumber || !invoiceDate || !buyerPseudo || !sku || !articleDescription || !unitPrice) {
+        if (!invoiceNumber || !invoiceDate || !buyerPseudo || !transactionNumber || !sku || !articleDescription || !unitPrice) {
             alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
             return;
         }
@@ -529,6 +536,7 @@
         document.getElementById('displayInvoiceNumber').textContent = invoiceNumber;
         document.getElementById('displayDate').textContent = invoiceDate;
         document.getElementById('displayBuyerPseudo').textContent = buyerPseudo;
+        document.getElementById('displayTransaction').textContent = transactionNumber;
         document.getElementById('displaySKU').textContent = sku;
         document.getElementById('displayQuantity').textContent = quantity;
         document.getElementById('displayArticle').textContent = articleDescription;
@@ -564,6 +572,7 @@
         
         document.getElementById('invoiceDate').value = '';
         document.getElementById('buyerPseudo').value = '';
+        document.getElementById('transactionNumber').value = '';
         document.getElementById('sku').value = '';
         document.getElementById('quantity').value = '1';
         document.getElementById('articleDescription').value = '';
